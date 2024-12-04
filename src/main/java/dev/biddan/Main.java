@@ -4,10 +4,14 @@ import java.io.IOException;
 import org.kohsuke.github.GHRepository;
 
 public class Main {
+    private static final String GITHUB_TOKEN = "GITHUB_TOKEN";
 
     public static void main(String[] args) throws IOException {
+        // 깃허브 토큰 설정
+        String oauthToken = System.getenv(GITHUB_TOKEN);
+
         // 깃허브 클라이언트 연결
-        String oauthToken = "oauthToken";
+        System.out.println(oauthToken);
         GithubClient client = new GithubClient(oauthToken);
 
         // 레포지토리 가져오기
