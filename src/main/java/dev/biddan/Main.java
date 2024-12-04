@@ -7,7 +7,7 @@ import org.kohsuke.github.GHRepository;
 public class Main {
     private static final String GITHUB_TOKEN = "GITHUB_TOKEN";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // 깃허브 토큰 설정
         String oauthToken = System.getenv(GITHUB_TOKEN);
 
@@ -30,7 +30,7 @@ public class Main {
             return githubRepository.listCommits()
                     .toList()
                     .stream()
-                    .map(Commit::from)
+                    .map(commit -> Commit.from(commit, githubRepository))
                     .toList();
         } catch (IOException e) {
             throw new GitHubException("커밋 목록 조회 실패", e);
