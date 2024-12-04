@@ -1,6 +1,7 @@
 package dev.biddan;
 
 import java.io.IOException;
+import java.util.List;
 import org.kohsuke.github.GHRepository;
 
 public class Main {
@@ -11,7 +12,6 @@ public class Main {
         String oauthToken = System.getenv(GITHUB_TOKEN);
 
         // 깃허브 클라이언트 연결
-        System.out.println(oauthToken);
         GithubClient client = new GithubClient(oauthToken);
 
         // 레포지토리 가져오기
@@ -19,5 +19,21 @@ public class Main {
         GHRepository githubRepository = client.getRepository(repository);
 
         // 레포지토리 전체 커밋 조회
+        List<Commit> commits = getCommits(githubRepository);
+
+        // 커밋 출력
+        commits.forEach(System.out::println);
+    }
+
+    private static List<Commit> getCommits(GHRepository githubRepository) {
+        try {
+            return githubRepository.listCommits()
+                    .toList()
+                    .stream()
+                    .map(Commit::from)
+                    .toList();
+        } catch (IOException e) {
+            throw new GitHubException("커밋 목록 조회 실패", e);
+        }
     }
 }
